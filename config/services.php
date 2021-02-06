@@ -30,4 +30,13 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'google' => [
+        'client_id' => '393930478506-nla4crien4gb19arj52e3auok8fbp4ga.apps.googleusercontent.com',
+        'project_id' => 'project-design-03',
+        'auth_uri' => 'https://accounts.google.com/o/oauth2/auth',
+        'token_uri' => 'https://oauth2.googleapis.com/token',
+        'auth_provider_x509_cert_url' => 'https://www.googleapis.com/oauth2/v1/certs',
+        'client_secret' => 'RIpNOpsgUh_i0zzekUnoiFDH',
+        'redirect' => 'http://localhost/account/google-callback',
+    ],
 ];

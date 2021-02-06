@@ -1,18 +1,17 @@
 <?php
 
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\Services\GoogleServiceController;
 use Illuminate\Support\Facades\Route;
 
-/*
-|--------------------------------------------------------------------------
-| Web Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register web routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| contains the "web" middleware group. Now create something great!
-|
-*/
+require __DIR__ . '/auth.php';
 
-Route::get('/', function () {
-    return view('welcome');
+Route::middleware('auth')->group(function () {
+    Route::get('/', [HomeController::class, 'index'])->name('dashboard');
+
+    // Đăng nhập Google
+    Route::get('/account/add-account-google', [GoogleServiceController::class, 'redirectToGoogleLogin'])
+        ->name('account.add-account-google');
+    // Xử lý callback của Google
+    Route::get('/account/google-callback', [GoogleServiceController::class, 'handleGoogleCallback']);
 });
