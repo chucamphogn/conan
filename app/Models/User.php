@@ -44,21 +44,21 @@ class User extends Authenticatable
     ];
 
     /**
-     * Lấy tất cả token thuộc về tài khoản đang đăng nhập
+     * Lấy tất cả tài khoản người dùng đã thêm vào
      * @return HasMany
      */
     public function cloudStorage(): HasMany
     {
-        return $this->hasMany(Token::class);
+        return $this->hasMany(Account::class);
     }
 
     /**
-     * Lấy các token GoogleDrive của tài khoản đang đăng nhập
+     * Lấy các tài khoản GoogleDrive của tài khoản đang đăng nhập
      * @return HasMany
      */
     public function googleAccounts(): HasMany
     {
-        return $this->hasMany(Token::class)
+        return $this->hasMany(Account::class)
             ->where('token_type', TokenType::GOOGLE());
     }
 }

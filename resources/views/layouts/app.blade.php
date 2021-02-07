@@ -17,20 +17,18 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body class="font-sans antialiased">
-    <div class="min-h-screen bg-gray-100">
-    @include('layouts.navigation')
+    <div class="flex flex-col min-h-screen dark:bg-gray-800 bg-gray-100 md:flex-row">
+        @include('layouts.navigation')
 
-    <!-- Page Heading -->
-        <header class="bg-white shadow">
-            <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
-                {{ $header }}
-            </div>
-        </header>
+        <div class="flex flex-col w-full">
+            <nav class="h-16 bg-white dark:bg-gray-900 hidden md:block">
+                <span>navbar</span>
+            </nav>
 
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
+            <main>
+                {{ $slot }}
+            </main>
+        </div>
     </div>
 </body>
 </html>

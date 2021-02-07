@@ -36,8 +36,10 @@ class GoogleServiceController extends Controller
     {
         $user = $this->googleProvider->user();
 
-        auth()->user()->googleAccounts()->create([
+        auth()->user()->cloudStorage()->create([
             'user_id' => auth()->id(),
+            'alias_name' => $user->getName(),
+            'email' => $user->getEmail(),
             'token_type' => TokenType::GOOGLE(),
             'access_token' => $user->token,
             'refresh_token' => $user->refreshToken,

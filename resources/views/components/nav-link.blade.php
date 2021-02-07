@@ -1,11 +1,11 @@
-@props(['active'])
+@props(['active', 'href'])
 
 @php
     $classes = ($active ?? false)
-                ? 'inline-flex items-center px-1 pt-1 border-b-2 border-indigo-400 text-sm font-medium leading-5 text-gray-900 focus:outline-none focus:border-indigo-700 transition duration-150 ease-in-out'
-                : 'inline-flex items-center px-1 pt-1 border-b-2 border-transparent text-sm font-medium leading-5 text-gray-500 hover:text-gray-700 hover:border-gray-300 focus:outline-none focus:text-gray-700 focus:border-gray-300 transition duration-150 ease-in-out'
+                ? 'block py-2 px-4 mt-2 font-semibold text-white bg-blue-500 rounded-lg dark:bg-gray-700 dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 hover:text-white focus:text-white hover:bg-blue-600 focus:bg-blue-600 focus:outline-none focus:shadow-outline transition duration-500 ease-in-out'
+                : 'block py-2 px-4 mt-2 font-semibold text-gray-900 bg-transparent rounded-lg dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 hover:text-gray-900 focus:text-gray-900 hover:bg-blue-100 focus:bg-blue-100 focus:outline-none focus:shadow-outline transition duration-500 ease-in-out'
 @endphp
 
-<a {{ $attributes->merge(['class' => $classes]) }}>
+<a {{ $attributes->merge(['class' => $classes]) }} href="{{ $href }}">
     {{ $slot }}
 </a>
