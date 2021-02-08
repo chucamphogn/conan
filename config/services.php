@@ -39,4 +39,10 @@ return [
         'client_secret' => 'RIpNOpsgUh_i0zzekUnoiFDH',
         'redirect' => 'http://localhost/account/google-callback',
     ],
+
+    'dropbox' => [
+        'client_id' => 'mzsu4lylw894112',
+        'client_secret' => '8jmq4ugne1gnyu4',
+        'redirect' => 'http://localhost/account/dropbox-callback',
+    ],
 ];

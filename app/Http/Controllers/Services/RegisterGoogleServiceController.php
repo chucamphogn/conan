@@ -9,19 +9,16 @@ use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
 use Laravel\Socialite\Two\GoogleProvider;
 
-class GoogleServiceController extends Controller
+class RegisterGoogleServiceController extends Controller implements HandleRegisterServiceController
 {
-    /**
-     * @var GoogleProvider
-     */
-    private $googleProvider;
+    private GoogleProvider $googleProvider;
 
     public function __construct()
     {
         $this->googleProvider = Socialite::driver('google');
     }
 
-    public function redirectToGoogleLogin(): RedirectResponse
+    public function redirectToLoginPage(): RedirectResponse
     {
         return $this->googleProvider
             ->scopes(Google_Service_Drive::DRIVE)
@@ -32,7 +29,7 @@ class GoogleServiceController extends Controller
             ->redirect();
     }
 
-    public function handleGoogleCallback(): RedirectResponse
+    public function handleCallback(): RedirectResponse
     {
         $user = $this->googleProvider->user();
 

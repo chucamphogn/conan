@@ -12,6 +12,11 @@
                 Thêm tài khoản Google
             </a>
 
+            <a href="{{ route('account.add-account-dropbox') }}" type="button"
+               class="inline-flex items-center py-2 px-4 mb-5 text-xs font-semibold tracking-widest text-white uppercase bg-gray-800 rounded-md border border-transparent ring-gray-300 transition duration-150 ease-in-out hover:bg-gray-700 active:bg-gray-900 focus:outline-none focus:border-gray-900 focus:ring disabled:opacity-25">
+                Thêm tài khoản Dropbox
+            </a>
+
             <div class="overflow-hidden bg-white shadow-sm sm:rounded-lg">
                 <div class="p-6 bg-white border-b border-gray-200">
                     You're logged in!

@@ -6,7 +6,7 @@ use Spatie\Enum\Laravel\Enum;
 
 /**
  * @method static self GOOGLE()
- * @method static self DROP_BOX()
+ * @method static self DROPBOX()
  */
 final class TokenType extends Enum
 {
@@ -14,7 +14,7 @@ final class TokenType extends Enum
     {
         return [
             'GOOGLE' => 'google',
-            'DROP_BOX' => 'drop_box',
+            'DROPBOX' => 'dropbox',
         ];
     }
 }
