@@ -1,12 +1,12 @@
 @props([
     'active' => false,
-    'type' => App\Enums\TokenType::GOOGLE(),
+    'provider' => App\Enums\Provider::GOOGLE(),
     'title' => 'Không có tên',
     'description' => ''
 ])
 
 @php
-    use App\Enums\TokenType;
+    use App\Enums\Provider;
 
     $classes = $active
         ? 'flex items-center py-2 px-4 min-w-0 text-sm font-semibold text-white bg-blue-500 rounded-lg transition duration-500 ease-in-out dark:bg-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600 dark:focus:text-white dark:hover:text-white dark:text-gray-200 focus:outline-none focus:shadow-outline transition duration-500 ease-in-out'
@@ -17,7 +17,7 @@
         : 'text-gray-400';
 
     $icon = match (true) {
-        $type->equals(TokenType::DROPBOX()) => 'https://cfl.dropboxstatic.com/static/images/logo_catalog/dropbox_logo_glyph_m1.svg',
+        $provider->equals(Provider::DROPBOX()) => 'https://cfl.dropboxstatic.com/static/images/logo_catalog/dropbox_logo_glyph_m1.svg',
         default => 'https://www.google.com/images/icons/product/drive-32.png',
     }
 @endphp

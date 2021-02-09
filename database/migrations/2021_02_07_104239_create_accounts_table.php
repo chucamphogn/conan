@@ -26,15 +26,15 @@ class CreateAccountsTable extends Migration
             $table->string('alias_name', 20);
 
             /**
-             * Địa chỉ email của kho lưu trữ (Cho phép 1 kho lưu trữ được quản lý bởi nhiều tài khoản nên không đặt unique)
+             * Địa chỉ email của kho lưu trữ
              */
             $table->string('email');
 
             /**
-             * Dùng để phân biệt token này của Google hay của Dropbox,...
-             * @see \App\Enums\TokenType Định nghĩa các giá trị của token_type ở trong class này
+             * Dùng để phân biệt tài khoản này của Google hay của Dropbox,...
+             * @see \App\Enums\Provider Định nghĩa các giá trị của provider ở trong class này
              */
-            $table->string('token_type');
+            $table->string('provider');
 
             /**
              * Lưu trữ access_token
@@ -50,6 +50,16 @@ class CreateAccountsTable extends Migration
              * Thời gian hết hạn của access_token
              */
             $table->integer('expires_in');
+
+            /**
+             * Email có thể trùng lặp nhưng không thể trùng cả kho lưu trữ
+             */
+            $table->unique(['user_id', 'email', 'provider']);
+
+            /**
+             * Bí danh của kho lưu trữ không được trùng nhau trong 1 tài khoản
+             */
+            $table->unique(['user_id', 'alias_name']);
         });
     }
 

@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers\Services;
 
-use App\Enums\TokenType;
+use App\Enums\Provider;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Laravel\Socialite\Facades\Socialite;
@@ -35,7 +35,7 @@ class RegisterDropboxServiceController extends Controller implements HandleRegis
             'user_id' => auth()->id(),
             'alias_name' => $user->getName(),
             'email' => $user->getEmail(),
-            'token_type' => TokenType::DROPBOX(),
+            'provider' => Provider::DROPBOX(),
             'access_token' => $user->token,
             'refresh_token' => $user->refreshToken,
             'expires_in' => $user->expiresIn,

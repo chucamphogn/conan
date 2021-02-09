@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\TokenType;
+use App\Enums\Provider;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Model;
 
@@ -14,14 +14,14 @@ class Account extends Model
         'user_id',
         'alias_name',
         'email',
-        'token_type',
+        'provider',
         'access_token',
         'refresh_token',
         'expires_in',
     ];
 
     protected $casts = [
-        'token_type' => TokenType::class,
+        'provider' => Provider::class,
     ];
 
     public $timestamps = false;

@@ -16,6 +16,7 @@
         "laravel/framework": "^8.26",
         "laravel/socialite": "^5.1",
         "laravel/tinker": "^2.6",
+        "nao-pon/flysystem-google-drive": "~1.1",
         "socialiteproviders/dropbox": "^4.2",
         "spatie/flysystem-dropbox": "^1.2",
         "spatie/laravel-enum": "^2.2"

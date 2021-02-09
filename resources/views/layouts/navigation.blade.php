@@ -38,7 +38,7 @@
 
                 <div class="grid gap-2">
                     @foreach($cloudStorageAccounts as $account)
-                        <x-dropdown-cloud-link href="#" :type="$account->token_type"
+                        <x-dropdown-cloud-link href="#" :provider="$account->provider"
                                                :title="$account->alias_name" :description="$account->email" />
                     @endforeach
                 </div>

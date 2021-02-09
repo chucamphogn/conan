@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use App\Enums\TokenType;
+use App\Enums\Provider;
 use App\Models\Traits\Uuid;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -45,6 +45,7 @@ class User extends Authenticatable
 
     /**
      * Lấy tất cả tài khoản người dùng đã thêm vào
+     *
      * @return HasMany
      */
     public function cloudStorage(): HasMany
@@ -54,11 +55,23 @@ class User extends Authenticatable
 
     /**
      * Lấy các tài khoản GoogleDrive của tài khoản đang đăng nhập
+     *
      * @return HasMany
      */
     public function googleAccounts(): HasMany
     {
         return $this->hasMany(Account::class)
-            ->where('token_type', TokenType::GOOGLE());
+            ->where('provider', Provider::GOOGLE());
+    }
+
+    /**
+     * Lấy các tài khoản Dropbox của tài khoản đang đăng nhập
+     *
+     * @return HasMany
+     */
+    public function dropboxAccounts(): HasMany
+    {
+        return $this->hasMany(Account::class)
+            ->where('provider', Provider::DROPBOX());
     }
 }
