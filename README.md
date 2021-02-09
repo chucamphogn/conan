@@ -28,7 +28,7 @@
           hình bên dưới
           ![image](https://user-images.githubusercontent.com/58473133/107377080-29890000-6b1d-11eb-93ba-9055ea9afc76.png)
         - Cấu hình trên chỉ hiện khi đã chỉnh lên WSL 2
-    - [Git: Đã được cài sẵn khi cài Ubuntu 20.04]()
+    - [Git: Đã được cài sẵn khi cài Ubuntu 20.04](https://github.com/project-design-03/cloud-storage-all-in-one)
     - [PhpStormProjects](https://www.jetbrains.com/toolbox-app/)
         - Nên sử dụng PhpStorm vì nó hỗ trợ rất tốt cho ngôn ngữ PHP, vì Laravel sử dụng Reflection rất nhiều nên nếu sử
           dụng những loại như Visual studio code thì khả năng hỗ trợ hoàn thành code không được tốt bằng PhpStorm
@@ -47,8 +47,10 @@
    ```bash
    # Tạo thư mục ~/PhpStormProjects
    mkdir ~/PhpStormProjects
+   
    # Trỏ đến thư mục ~/PhpStormProjects
    cd ~/PhpStormProjects
+   
    # Clone project về
    git clone https://github.com/project-design-03/cloud-storage-all-in-one.git
    ```
@@ -56,35 +58,35 @@
 
 3. Sau khi đã clone về xong thì hãy trỏ vào thư mục project và chạy lệnh sau để bắt đầu cài đặt các thư viện của project
 
-```bash
-docker run --rm \
-    -v $(pwd):/opt \
-    -w /opt \
-    laravelsail/php80-composer:latest \
-    bash -c "composer install"
-
-# Nếu có yêu cầu nhập mật khẩu thì hãy nhập mật khẩu mà đã đặt khi cài đặt Ubuntu
-sudo chown -R $USER: .
-```
+    ```bash
+    docker run --rm \
+        -v $(pwd):/opt \
+        -w /opt \
+        laravelsail/php80-composer:latest \
+        bash -c "composer install"
+    
+    # Nếu có yêu cầu nhập mật khẩu thì hãy nhập mật khẩu mà đã đặt khi cài đặt Ubuntu
+    sudo chown -R $USER: .
+    ```
 
 4. Sau khi đã chạy xong lệnh trên thì chạy tiếp lệnh dưới đây:
 
-```bash
-# Bước 1: Khởi chạy các dịch vụ để hỗ trợ chạy dự án (Sẽ mất khá nhiều thời gian ở lần đầu tiên)
-./vendor/bin/sail up -d
-
-# Bước 2: Tạo application key cho dự án
-./vendor/bin/sail artisan key:generate --ansi
-
-# Bước 3: Cài đặt các thư viện hỗ trợ front-end
-./vendor/bin/sail artisan yarn install
-
-# Bước 4: Build các file hỗ trợ front-end sang css, js,...
-./vendor/bin/sail artisan yarn dev
-
-# Bước 5: Khởi tạo các bảng trong cơ sở dữ liệu
-# --seed: Có nghĩa sẽ khởi tạo luôn các tài khoản đã được cấu hình sẵn, nếu bỏ đi sẽ chỉ tạo các bảng mà không tạo dữ liệu
-./vendor/bin/sail artisan migrate:fresh --seed
-```
+    ```bash
+    # Bước 1: Khởi chạy các dịch vụ để hỗ trợ chạy dự án (Sẽ mất khá nhiều thời gian ở lần đầu tiên)
+    ./vendor/bin/sail up -d
+    
+    # Bước 2: Tạo application key cho dự án
+    ./vendor/bin/sail artisan key:generate --ansi
+    
+    # Bước 3: Cài đặt các thư viện hỗ trợ front-end
+    ./vendor/bin/sail artisan yarn install
+    
+    # Bước 4: Build các file hỗ trợ front-end sang css, js,...
+    ./vendor/bin/sail artisan yarn dev
+    
+    # Bước 5: Khởi tạo các bảng trong cơ sở dữ liệu
+    # --seed: Có nghĩa sẽ khởi tạo luôn các tài khoản đã được cấu hình sẵn, nếu bỏ đi sẽ chỉ tạo các bảng mà không tạo dữ liệu
+    ./vendor/bin/sail artisan migrate:fresh --seed
+    ```
 
 5. Mở project trên PhpStorm và bắt đầu lập trình 🙄
