@@ -3,14 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Account;
-use App\Utils\StorageUtils;
+use Facades\App\Manager\CloudStorage;
 use Illuminate\Contracts\View\View;
-use Illuminate\Support\Facades\Storage;
 
 class HomeController extends Controller
 {
     /**
      * @dev Chỉ mới hiện các tệp tin để kiểm thử
+     *
      * @return View
      */
     public function index(): View
@@ -19,10 +19,9 @@ class HomeController extends Controller
         $accounts = auth()->user()->cloudStorage()->get();
 
         foreach ($accounts as $account) {
-            dump("Kho lưu trữ: {$account->provider->label} | Tài khoản: {$account->email}");
-            StorageUtils::setAccessToken($account->provider, $account);
-            $files = Storage::disk($account->provider->value)->listContents('/', false);
-            StorageUtils::clearGoogleAccessToken();
+            $storage = CloudStorage::driver($account->provider->value);
+            $storage->setToken($account->toArray());
+            $files = $storage->listContents('/', false);
             dump($files);
         }
 

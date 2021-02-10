@@ -24,8 +24,6 @@ class Account extends Model
         'provider' => Provider::class,
     ];
 
-    public $timestamps = false;
-
     public function user()
     {
         $this->belongsTo(User::class);

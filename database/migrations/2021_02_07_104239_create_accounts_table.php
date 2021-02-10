@@ -60,6 +60,11 @@ class CreateAccountsTable extends Migration
              * Bí danh của kho lưu trữ không được trùng nhau trong 1 tài khoản
              */
             $table->unique(['user_id', 'alias_name']);
+
+            /**
+             * Thời gian token được tạo
+             */
+            $table->timestamps();
         });
     }
 
