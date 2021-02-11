@@ -18,7 +18,7 @@ class RegisterGoogleServiceController extends Controller implements HandleRegist
         $this->googleProvider = Socialite::driver('google');
     }
 
-    public function redirectToLoginPage(): RedirectResponse
+    public function redirectProviderLogin(): RedirectResponse
     {
         return $this->googleProvider
             ->scopes(Google_Service_Drive::DRIVE)
@@ -29,19 +29,11 @@ class RegisterGoogleServiceController extends Controller implements HandleRegist
             ->redirect();
     }
 
-    public function handleCallback(): RedirectResponse
+    public function handleProviderCallback(): RedirectResponse
     {
-        $user = $this->googleProvider->user();
+        $userSocialite = $this->googleProvider->user();
 
-        auth()->user()->cloudStorage()->create([
-            'user_id' => auth()->id(),
-            'alias_name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'provider' => Provider::GOOGLE(),
-            'access_token' => $user->token,
-            'refresh_token' => $user->refreshToken,
-            'expires_in' => $user->expiresIn,
-        ]);
+        auth()->user()->addCloudStorageAccount($userSocialite, Provider::GOOGLE());
 
         return redirect()->route('dashboard');
     }

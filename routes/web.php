@@ -13,14 +13,14 @@ Route::middleware('auth')->group(function () {
     /**
      * Xử lý thêm tài khoản Google
      */
-    Route::get('/account/add-account-google', [RegisterGoogleServiceController::class, 'redirectToLoginPage'])
+    Route::get('/account/add-account-google', [RegisterGoogleServiceController::class, 'redirectProviderLogin'])
         ->name('account.add-account-google');
-    Route::get('/account/google-callback', [RegisterGoogleServiceController::class, 'handleCallback']);
+    Route::get('/account/google-callback', [RegisterGoogleServiceController::class, 'handleProviderCallback']);
 
     /**
      * Xử lý thêm tài khoản Dropbox
      */
-    Route::get('/account/add-account-dropbox', [RegisterDropboxServiceController::class, 'redirectToLoginPage'])
+    Route::get('/account/add-account-dropbox', [RegisterDropboxServiceController::class, 'redirectProviderLogin'])
         ->name('account.add-account-dropbox');
-    Route::get('/account/dropbox-callback', [RegisterDropboxServiceController::class, 'handleCallback']);
+    Route::get('/account/dropbox-callback', [RegisterDropboxServiceController::class, 'handleProviderCallback']);
 });

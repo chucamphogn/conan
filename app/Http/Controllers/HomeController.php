@@ -16,7 +16,7 @@ class HomeController extends Controller
     public function index(): View
     {
         /** @var Account[] $accounts */
-        $accounts = auth()->user()->cloudStorage()->get();
+        $accounts = auth()->user()->cloudStorageAccounts()->get();
 
         foreach ($accounts as $account) {
             $storage = CloudStorage::driver($account->provider->value);

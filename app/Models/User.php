@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Laravel\Socialite\Two\User as UserTwo;
 
 class User extends Authenticatable
 {
@@ -48,7 +49,7 @@ class User extends Authenticatable
      *
      * @return HasMany
      */
-    public function cloudStorage(): HasMany
+    public function cloudStorageAccounts(): HasMany
     {
         return $this->hasMany(Account::class);
     }
@@ -73,5 +74,26 @@ class User extends Authenticatable
     {
         return $this->hasMany(Account::class)
             ->where('provider', Provider::DROPBOX());
+    }
+
+    /**
+     * Thêm tài khoản kho lưu trữ vào cơ sở dữ liệu
+     *
+     * @param UserTwo $userSocialite
+     * @param Provider $provider
+     *
+     * @return Account
+     */
+    public function addCloudStorageAccount(UserTwo $userSocialite, Provider $provider): Account
+    {
+        return auth()->user()->cloudStorageAccounts()->create([
+            'user_id' => auth()->id(),
+            'alias_name' => $userSocialite->getName(),
+            'email' => $userSocialite->getEmail(),
+            'provider' => $provider,
+            'access_token' => $userSocialite->token,
+            'refresh_token' => $userSocialite->refreshToken,
+            'expires_in' => $userSocialite->expiresIn,
+        ]);
     }
 }

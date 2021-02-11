@@ -8,16 +8,19 @@ use Illuminate\View\View;
 
 class ViewServiceProvider extends ServiceProvider
 {
-    public function register()
-    {
-        //
-    }
-
     public function boot()
     {
         ViewFactory::composer('layouts.navigation', function (View $view) {
-            $cloudStorageAccounts = auth()->user()->cloudStorage()->get();
+            $cloudStorageAccounts = auth()->user()
+                ->cloudStorageAccounts()
+                ->oldest('alias_name')
+                ->get();
             $view->with('cloudStorageAccounts', $cloudStorageAccounts);
         });
+    }
+
+    public function register()
+    {
+        //
     }
 }

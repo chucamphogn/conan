@@ -17,7 +17,7 @@ class RegisterDropboxServiceController extends Controller implements HandleRegis
         $this->dropboxProvider = Socialite::driver('dropbox');
     }
 
-    public function redirectToLoginPage(): RedirectResponse
+    public function redirectProviderLogin(): RedirectResponse
     {
         return $this->dropboxProvider
             ->scopes(['files.metadata.write', 'files.metadata.read', 'files.content.write', 'files.content.read'])
@@ -27,19 +27,11 @@ class RegisterDropboxServiceController extends Controller implements HandleRegis
             ->redirect();
     }
 
-    public function handleCallback(): RedirectResponse
+    public function handleProviderCallback(): RedirectResponse
     {
-        $user = $this->dropboxProvider->user();
+        $userSocialite = $this->dropboxProvider->user();
 
-        auth()->user()->cloudStorage()->create([
-            'user_id' => auth()->id(),
-            'alias_name' => $user->getName(),
-            'email' => $user->getEmail(),
-            'provider' => Provider::DROPBOX(),
-            'access_token' => $user->token,
-            'refresh_token' => $user->refreshToken,
-            'expires_in' => $user->expiresIn,
-        ]);
+        auth()->user()->addCloudStorageAccount($userSocialite, Provider::DROPBOX());
 
         return redirect()->route('dashboard');
     }
