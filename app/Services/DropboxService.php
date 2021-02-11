@@ -2,9 +2,9 @@
 
 namespace App\Services;
 
-use Illuminate\Support\Facades\Http;
+use App\Models\Account;
+use App\Services\Providers\Dropbox\DropboxClient;
 use League\Flysystem\Filesystem;
-use Spatie\Dropbox\Client as DropboxClient;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
 /**
@@ -30,59 +30,22 @@ final class DropboxService extends Service
      */
     public function setToken(mixed $token)
     {
-        $this->token = $this->parseToken($token);
+        $this->client->setAccessToken($token);
 
-        /**
-         * Do thư viện hỗ trợ không tự động làm mới access token khi hết hạn nên phải tự viết hàm làm mới access token
-         */
-        if ($this->isAccessTokenExpired()) {
+        // Xử lý khi access token hết hạn
+        if ($this->client->isAccessTokenExpired()) {
             // Lấy access_token mới dựa vào refresh_token
-            $newToken = $this->getAccessTokenWithRefreshToken($this->token['refresh_token']);
+            $newToken = $this->client->fetchAccessTokenWithRefreshToken();
 
-            // Cập nhật lại access_token trong cơ sở dữ liệu
-            $newToken = auth()->user()->dropboxAccounts()->updateOrCreate([
-                'id' => $this->token['id'],
-            ], $newToken);
+            // Trích 2 trường access_token và expires_in của token mới để cập nhật vào csdl
+            $values = collect($newToken)->only('access_token', 'expires_in')->toArray();
 
-            // Gán lại token mới vào DropboxClient
+            // Cập nhật lại access_token và expires_in trong cơ sở dữ liệu
+            $newToken = tap(Account::find(collect($token)->get('id')))->update($values);
+
+            // Gán lại token vào client
             $this->setToken($newToken);
         }
-
-        $this->client->setAccessToken($this->token['access_token']);
-    }
-
-    /**
-     * Kiểm tra access token đã hết hạn hay chưa
-     *
-     * @return bool
-     */
-    private function isAccessTokenExpired(): bool
-    {
-        // Lấy ngày cập nhật token + thời gian hết hạn
-        $expiredDay = $this->token['updated_at']->addSeconds($this->token['expires_in']);
-
-        // Nếu ngày hết hạn <= ngày hiện tại thì token đã hết hạn
-        return $expiredDay->lessThanOrEqualTo(now());
-    }
-
-    /**
-     * Làm mới access token dựa vào refresh token
-     *
-     * @param string $refreshToken
-     *
-     * @return array
-     */
-    private function getAccessTokenWithRefreshToken(string $refreshToken): array
-    {
-        $response = Http::withBasicAuth(
-            config('services.dropbox.client_id'),
-            config('services.dropbox.client_secret')
-        )->asForm()->post('https://api.dropbox.com/oauth2/token', [
-            'grant_type' => 'refresh_token',
-            'refresh_token' => $refreshToken,
-        ]);
-
-        return $response->json();
     }
 
     public function __call(string $name, array $arguments)
