@@ -97,7 +97,7 @@ class DropboxClient extends Client
      *
      * @return array
      */
-    #[ArrayShape(['access_token' => 'string', 'refresh_token' => 'null|string', 'expires_in' => 'int'])]
+    #[ArrayShape(['access_token' => 'string', 'expires_in' => 'int'])]
     public function fetchAccessTokenWithRefreshToken(): array
     {
         $currentToken = $this->getTokenProvider();
@@ -117,7 +117,6 @@ class DropboxClient extends Client
         // Trả về thông tin access token mới
         return [
             'access_token' => $currentToken->getAccessToken(),
-            'refresh_token' => $currentToken->getRefreshToken(),
             'expires_in' => $currentToken->getExpiresIn(),
         ];
     }

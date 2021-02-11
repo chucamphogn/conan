@@ -37,11 +37,8 @@ final class DropboxService extends Service
             // Lấy access_token mới dựa vào refresh_token
             $newToken = $this->client->fetchAccessTokenWithRefreshToken();
 
-            // Trích 2 trường access_token và expires_in của token mới để cập nhật vào csdl
-            $values = collect($newToken)->only('access_token', 'expires_in')->toArray();
-
             // Cập nhật lại access_token và expires_in trong cơ sở dữ liệu
-            $newToken = tap(Account::find(collect($token)->get('id')))->update($values);
+            $newToken = tap(Account::find(collect($token)->get('id')))->update($newToken);
 
             // Gán lại token vào client
             $this->setToken($newToken);
