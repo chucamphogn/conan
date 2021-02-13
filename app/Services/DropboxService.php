@@ -8,7 +8,7 @@ use League\Flysystem\Filesystem;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
 /**
- * @property DropboxClient $client
+ * @property DropboxClient  $client
  * @property DropboxAdapter $adapter
  */
 final class DropboxService extends Service
@@ -23,8 +23,13 @@ final class DropboxService extends Service
         $this->storage = new Filesystem($this->adapter, ['case_sensitive' => false]);
     }
 
+    public function __call(string $name, array $arguments)
+    {
+        return call_user_func_array([$this->storage, $name], $arguments);
+    }
+
     /**
-     * Xử lý token khi gán vào Dropbox API
+     * Xử lý token khi gán vào Dropbox API.
      *
      * @param mixed $token
      */
@@ -43,10 +48,5 @@ final class DropboxService extends Service
             // Gán lại token vào client
             $this->setToken($newToken);
         }
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        return call_user_func_array([$this->storage, $name], $arguments);
     }
 }

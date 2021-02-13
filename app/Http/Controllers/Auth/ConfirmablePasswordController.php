@@ -15,6 +15,7 @@ class ConfirmablePasswordController extends Controller
      * Show the confirm password view.
      *
      * @param Request $request
+     *
      * @return View
      */
     public function show(Request $request)
@@ -26,6 +27,9 @@ class ConfirmablePasswordController extends Controller
      * Confirm the user's password.
      *
      * @param Request $request
+     *
+     * @throws ValidationException
+     *
      * @return mixed
      */
     public function store(Request $request)

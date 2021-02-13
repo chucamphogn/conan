@@ -22,9 +22,10 @@ class PasswordResetLinkController extends Controller
      * Handle an incoming password reset link request.
      *
      * @param \Illuminate\Http\Request $request
-     * @return \Illuminate\Http\RedirectResponse
      *
      * @throws \Illuminate\Validation\ValidationException
+     *
+     * @return \Illuminate\Http\RedirectResponse
      */
     public function store(Request $request)
     {
@@ -39,7 +40,7 @@ class PasswordResetLinkController extends Controller
             $request->only('email')
         );
 
-        return $status == Password::RESET_LINK_SENT
+        return Password::RESET_LINK_SENT == $status
             ? back()->with('status', __($status))
             : back()->withInput($request->only('email'))
                 ->withErrors(['email' => __($status)]);

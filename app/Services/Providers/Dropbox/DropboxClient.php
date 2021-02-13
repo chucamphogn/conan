@@ -8,52 +8,13 @@ use ReflectionProperty;
 use Spatie\Dropbox\Client;
 
 /**
- * Do lớp Spatie\Dropbox\Client để tokenProvider ở private nên phải dùng Reflection để có thể thao tác với tokenProvider trong lớp Spatie\Dropbox\Client
+ * Do lớp Spatie\Dropbox\Client để tokenProvider ở private nên phải dùng Reflection để có thể thao tác với
+ * tokenProvider trong lớp Spatie\Dropbox\Client.
  */
 class DropboxClient extends Client
 {
     /**
-     * Trả về ReflectionProperty truy cập vào biến private tokenProvider
-     *
-     * @return ReflectionProperty
-     */
-    private function getTokenProviderReflection(): ReflectionProperty
-    {
-        $reflectionProperty = new ReflectionProperty(parent::class, 'tokenProvider');
-        $reflectionProperty->setAccessible(true);
-
-        return $reflectionProperty;
-    }
-
-    /**
-     * Trả về giá trị của token provider dựa vào ReflectionProperty
-     *
-     * @param ReflectionProperty|null $reflectionProperty
-     *
-     * @return Token
-     */
-    private function getTokenProvider(?ReflectionProperty $reflectionProperty = null): Token
-    {
-        $reflectionProperty = $reflectionProperty ?: $this->getTokenProviderReflection();
-
-        return $reflectionProperty->getValue($this);
-    }
-
-    /**
-     * Gán giá trị vào tokenProvider dựa vào ReflectionProperty
-     *
-     * @param Token $token
-     * @param ReflectionProperty|null $reflectionProperty
-     */
-    private function setTokenProvider(Token $token, ?ReflectionProperty $reflectionProperty = null)
-    {
-        $reflectionProperty = $reflectionProperty ?: $this->getTokenProviderReflection();
-
-        $reflectionProperty->setValue($this, $token);
-    }
-
-    /**
-     * Lấy access token từ client
+     * Lấy access token từ client.
      *
      * @return string
      */
@@ -63,7 +24,7 @@ class DropboxClient extends Client
     }
 
     /**
-     * Gán token vào client
+     * Gán token vào client.
      *
      * @param mixed $accessToken
      *
@@ -77,7 +38,7 @@ class DropboxClient extends Client
     }
 
     /**
-     * Kiểm tra xem access token đã hết hạn hay chưa
+     * Kiểm tra xem access token đã hết hạn hay chưa.
      *
      * @return bool
      */
@@ -93,7 +54,7 @@ class DropboxClient extends Client
     }
 
     /**
-     * Trả về thông tin access token sau khi được làm mới
+     * Trả về thông tin access token sau khi được làm mới.
      *
      * @return array
      */
@@ -119,5 +80,45 @@ class DropboxClient extends Client
             'access_token' => $currentToken->getAccessToken(),
             'expires_in' => $currentToken->getExpiresIn(),
         ];
+    }
+
+    /**
+     * Trả về ReflectionProperty truy cập vào biến private tokenProvider.
+     *
+     * @return ReflectionProperty
+     */
+    private function getTokenProviderReflection(): ReflectionProperty
+    {
+        $reflectionProperty = new ReflectionProperty(parent::class, 'tokenProvider');
+        $reflectionProperty->setAccessible(true);
+
+        return $reflectionProperty;
+    }
+
+    /**
+     * Trả về giá trị của token provider dựa vào ReflectionProperty.
+     *
+     * @param null|ReflectionProperty $reflectionProperty
+     *
+     * @return Token
+     */
+    private function getTokenProvider(?ReflectionProperty $reflectionProperty = null): Token
+    {
+        $reflectionProperty = $reflectionProperty ?: $this->getTokenProviderReflection();
+
+        return $reflectionProperty->getValue($this);
+    }
+
+    /**
+     * Gán giá trị vào tokenProvider dựa vào ReflectionProperty.
+     *
+     * @param Token                   $token
+     * @param null|ReflectionProperty $reflectionProperty
+     */
+    private function setTokenProvider(Token $token, ?ReflectionProperty $reflectionProperty = null)
+    {
+        $reflectionProperty = $reflectionProperty ?: $this->getTokenProviderReflection();
+
+        $reflectionProperty->setValue($this, $token);
     }
 }

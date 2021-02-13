@@ -12,7 +12,7 @@ use JetBrains\PhpStorm\ArrayShape;
 use League\Flysystem\Filesystem;
 
 /**
- * @property GoogleClient $client
+ * @property GoogleClient       $client
  * @property GoogleDriveAdapter $adapter
  */
 final class GoogleServiceDrive extends Service
@@ -34,6 +34,11 @@ final class GoogleServiceDrive extends Service
         ]);
 
         $this->storage = new Filesystem($this->adapter);
+    }
+
+    public function __call(string $name, array $arguments)
+    {
+        return call_user_func_array([$this->storage, $name], $arguments);
     }
 
     public function setToken(mixed $token)
@@ -64,10 +69,5 @@ final class GoogleServiceDrive extends Service
     public function clearCache()
     {
         $this->client->getCache()->clear();
-    }
-
-    public function __call(string $name, array $arguments)
-    {
-        return call_user_func_array([$this->storage, $name], $arguments);
     }
 }

@@ -7,6 +7,26 @@ use Illuminate\Support\Str;
 
 trait Uuid
 {
+    /**
+     * Trả về kiểu dữ liệu string vì để lưu được UUID thì phải lưu ở kiểu string.
+     *
+     * @return string
+     */
+    public function getKeyType(): string
+    {
+        return 'string';
+    }
+
+    /**
+     * Trả về false vì UUID không có tính tự động tăng.
+     *
+     * @return bool
+     */
+    public function getIncrementing(): bool
+    {
+        return false;
+    }
+
     protected static function bootUuid()
     {
         // Tạo UUID và gán UUID cho model
@@ -28,25 +48,5 @@ trait Uuid
                 }
             }
         });
-    }
-
-    /**
-     * Trả về kiểu dữ liệu string vì để lưu được UUID thì phải lưu ở kiểu string
-     *
-     * @return string
-     */
-    public function getKeyType(): string
-    {
-        return 'string';
-    }
-
-    /**
-     * Trả về false vì UUID không có tính tự động tăng
-     *
-     * @return bool
-     */
-    public function getIncrementing(): bool
-    {
-        return false;
     }
 }

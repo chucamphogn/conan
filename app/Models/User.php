@@ -12,7 +12,9 @@ use Laravel\Socialite\Two\User as UserTwo;
 
 class User extends Authenticatable
 {
-    use HasFactory, Notifiable, Uuid;
+    use HasFactory;
+    use Notifiable;
+    use Uuid;
 
     /**
      * The attributes that are mass assignable.
@@ -45,7 +47,7 @@ class User extends Authenticatable
     ];
 
     /**
-     * Lấy tất cả tài khoản người dùng đã thêm vào
+     * Lấy tất cả tài khoản người dùng đã thêm vào.
      *
      * @return HasMany
      */
@@ -55,7 +57,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Lấy các tài khoản GoogleDrive của tài khoản đang đăng nhập
+     * Lấy các tài khoản GoogleDrive của tài khoản đang đăng nhập.
      *
      * @return HasMany
      */
@@ -66,7 +68,7 @@ class User extends Authenticatable
     }
 
     /**
-     * Lấy các tài khoản Dropbox của tài khoản đang đăng nhập
+     * Lấy các tài khoản Dropbox của tài khoản đang đăng nhập.
      *
      * @return HasMany
      */
@@ -77,9 +79,9 @@ class User extends Authenticatable
     }
 
     /**
-     * Thêm tài khoản kho lưu trữ vào cơ sở dữ liệu
+     * Thêm tài khoản kho lưu trữ vào cơ sở dữ liệu.
      *
-     * @param UserTwo $userSocialite
+     * @param UserTwo  $userSocialite
      * @param Provider $provider
      *
      * @return Account
