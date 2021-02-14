@@ -32,7 +32,7 @@ abstract class Service
     {
         $this->clearCache();
         $this->token = $this->parseToken($token);
-        call_user_func_array([$this->client, 'setAccessToken'], (array) json_encode($this->token, true));
+        call_user_func_array([$this->client, 'setAccessToken'], (array) json_encode($this->token));
     }
 
     public function clearCache()
