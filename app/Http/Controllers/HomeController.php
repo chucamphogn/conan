@@ -19,8 +19,8 @@ class HomeController extends Controller
         $accounts = auth()->user()->cloudStorageAccounts()->get();
 
         foreach ($accounts as $account) {
-            $storage = CloudStorage::driver($account->provider->value);
-            $storage->setToken($account->toArray());
+            $storage = CloudStorage::driver($account->provider);
+            $storage->setToken($account->token());
             $files = $storage->listContents('/', false);
             dump($files);
         }

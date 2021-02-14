@@ -2,13 +2,11 @@
 
 namespace App\Services;
 
-use App\Models\Account;
+use App\Models\Token;
 use Google\Exception as GoogleException;
 use Google_Client as GoogleClient;
 use Google_Service_Drive as GoogleServiceDriveBase;
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
-use Illuminate\Support\Carbon;
-use JetBrains\PhpStorm\ArrayShape;
 use League\Flysystem\Filesystem;
 
 /**
@@ -41,31 +39,22 @@ final class GoogleServiceDrive extends Service
         return call_user_func_array([$this->storage, $name], $arguments);
     }
 
-    public function setToken(mixed $token)
+    public function setToken(Token $token)
     {
+        // Khi thay đổi token thì cần clear cache để token cũ được bỏ, cụ thể xem thêm ở GoogleClient::setAccessToken()
         $this->clearCache();
 
-        $this->client->setAccessToken($this->parseToken($token));
+        $this->client->setAccessToken($token->toGoogleJsonStructure());
 
         if ($this->client->isAccessTokenExpired() && $this->client->getRefreshToken()) {
             $refreshToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
-            Account::find(collect($token)->get('id'))->update($refreshToken);
+            $token->update($refreshToken);
         }
     }
 
-    #[ArrayShape(['access_token' => 'string', 'refresh_token' => 'string', 'expires_in' => 'int', 'created' => 'int'])]
-    public function parseToken(mixed $token): array
-    {
-        $token = collect($token);
-
-        return [
-            'access_token' => $token->get('access_token'),
-            'refresh_token' => $token->get('refresh_token'),
-            'expires_in' => $token->get('expires_in'),
-            'created' => Carbon::parse($token->get('updated_at'))->timestamp,
-        ];
-    }
-
+    /**
+     * Xoá cache Google Service Drive.
+     */
     public function clearCache()
     {
         $this->client->getCache()->clear();

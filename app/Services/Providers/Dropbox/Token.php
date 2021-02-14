@@ -2,67 +2,26 @@
 
 namespace App\Services\Providers\Dropbox;
 
-use Illuminate\Support\Carbon;
+use App\Models\Token as BaseToken;
+use JetBrains\PhpStorm\Pure;
 use Spatie\Dropbox\TokenProvider;
 
-class Token implements TokenProvider
+/**
+ * Tuỳ chỉnh lại lớp Token cho phù hợp với Dropbox Client.
+ */
+class Token extends BaseToken implements TokenProvider
 {
-    private string $accessToken;
-    private ?string $refreshToken;
-    private int $expiresIn;
-    private Carbon $updatedAt;
-
-    public function __construct(mixed $token)
+    public function __construct(BaseToken $token)
     {
-        $token = collect($token);
-        $this->accessToken = $token->get('access_token');
-        $this->refreshToken = $token->get('refresh_token');
-        $this->expiresIn = $token->get('expires_in');
-        $this->updatedAt = Carbon::parse($token->get('updated_at'));
+        $this->setAccessToken($token->getAccessToken());
+        $this->setRefreshToken($token->getRefreshToken());
+        $this->setExpiresIn($token->getExpiresIn());
+        $this->setCreatedAt($token->getCreatedAt());
     }
 
+    #[Pure]
     public function getToken(): string
     {
-        return $this->accessToken;
-    }
-
-    public function getAccessToken(): mixed
-    {
-        return $this->accessToken;
-    }
-
-    public function getRefreshToken(): ?string
-    {
-        return $this->refreshToken;
-    }
-
-    public function getExpiresIn(): int
-    {
-        return $this->expiresIn;
-    }
-
-    public function getUpdatedAt(): Carbon
-    {
-        return $this->updatedAt;
-    }
-
-    public function setAccessToken(string $accessToken)
-    {
-        $this->accessToken = $accessToken;
-    }
-
-    public function setRefreshToken(?string $refreshToken)
-    {
-        $this->refreshToken = $refreshToken;
-    }
-
-    public function setExpiresIn(int $expiresIn)
-    {
-        $this->expiresIn = $expiresIn;
-    }
-
-    public function setUpdatedAt(Carbon $updatedAt)
-    {
-        $this->updatedAt = $updatedAt;
+        return $this->getAccessToken();
     }
 }

@@ -2,7 +2,7 @@
 
 namespace App\Services;
 
-use App\Models\Account;
+use App\Models\Token;
 use App\Services\Providers\Dropbox\DropboxClient;
 use League\Flysystem\Filesystem;
 use Spatie\FlysystemDropbox\DropboxAdapter;
@@ -33,20 +33,16 @@ final class DropboxService extends Service
      *
      * @param mixed $token
      */
-    public function setToken(mixed $token)
+    public function setToken(Token $token)
     {
         $this->client->setAccessToken($token);
 
         // Xử lý khi access token hết hạn
         if ($this->client->isAccessTokenExpired()) {
-            // Lấy access_token mới dựa vào refresh_token
+            // Lấy access_token mới dựa vào refresh_token, access token sẽ được tự động apply
             $newToken = $this->client->fetchAccessTokenWithRefreshToken();
 
-            // Cập nhật lại access_token và expires_in trong cơ sở dữ liệu
-            $newToken = tap(Account::find(collect($token)->get('id')))->update($newToken);
-
-            // Gán lại token vào client
-            $this->setToken($newToken);
+            $token->update($newToken);
         }
     }
 }

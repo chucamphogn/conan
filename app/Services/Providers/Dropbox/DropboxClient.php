@@ -2,6 +2,7 @@
 
 namespace App\Services\Providers\Dropbox;
 
+use App\Models\Token as BaseToken;
 use Illuminate\Support\Facades\Http;
 use JetBrains\PhpStorm\ArrayShape;
 use ReflectionProperty;
@@ -26,11 +27,11 @@ class DropboxClient extends Client
     /**
      * Gán token vào client.
      *
-     * @param mixed $accessToken
+     * @param BaseToken|string $accessToken
      *
      * @return $this
      */
-    public function setAccessToken(mixed $accessToken): self
+    public function setAccessToken(BaseToken | string $accessToken): self
     {
         $this->setTokenProvider(new Token($accessToken));
 
@@ -47,7 +48,7 @@ class DropboxClient extends Client
         $tokenProvider = $this->getTokenProvider();
 
         // Ngày hết hạn access token
-        $expiredDay = $tokenProvider->getUpdatedAt()->addSeconds($tokenProvider->getExpiresIn());
+        $expiredDay = $tokenProvider->getCreatedAt()->addSeconds($tokenProvider->getExpiresIn());
 
         // Ngày hết hạn <= ngày hiện tại => Token đã hết hạn
         return $expiredDay->lessThanOrEqualTo(now());
@@ -74,6 +75,9 @@ class DropboxClient extends Client
 
         $currentToken->setAccessToken($newToken['access_token']);
         $currentToken->setExpiresIn($newToken['expires_in']);
+
+        // Apply thông tin token mới vào Dropbox Client
+        $this->setTokenProvider($currentToken);
 
         // Trả về thông tin access token mới
         return [

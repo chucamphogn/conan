@@ -28,4 +28,23 @@ class Account extends Model
     {
         $this->belongsTo(User::class);
     }
+
+    /**
+     * Map thông tin token vào class Token.
+     *
+     * @return Token
+     *
+     * @see Token
+     */
+    public function token(): Token
+    {
+        $token = new Token();
+
+        $token->setAccessToken($this->getAttribute('access_token'))
+            ->setRefreshToken($this->getAttribute('refresh_token'))
+            ->setExpiresIn($this->getAttribute('expires_in'))
+            ->setCreatedAt($this->getAttribute('updated_at'));
+
+        return $token;
+    }
 }
