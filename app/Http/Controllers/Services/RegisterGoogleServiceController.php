@@ -13,19 +13,25 @@ class RegisterGoogleServiceController extends Controller implements HandleRegist
 {
     private GoogleProvider $googleProvider;
 
+    private array $scopes = [
+        Google_Service_Drive::DRIVE,
+    ];
+
+    private array $with = [
+        'access_type' => 'offline',
+        'prompt' => 'select_account consent',
+    ];
+
     public function __construct()
     {
-        $this->googleProvider = Socialite::driver('google');
+        $this->googleProvider = Socialite::driver(Provider::GOOGLE()->getValue());
     }
 
     public function redirectProviderLogin(): RedirectResponse
     {
         return $this->googleProvider
-            ->scopes(Google_Service_Drive::DRIVE)
-            ->with([
-                'access_type' => 'offline',
-                'prompt' => 'select_account consent',
-            ])
+            ->scopes($this->scopes)
+            ->with($this->with)
             ->redirect();
     }
 

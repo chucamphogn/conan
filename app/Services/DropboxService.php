@@ -28,11 +28,6 @@ final class DropboxService extends Service
         return call_user_func_array([$this->storage, $name], $arguments);
     }
 
-    /**
-     * Xử lý token khi gán vào Dropbox API.
-     *
-     * @param mixed $token
-     */
     public function setToken(Token $token)
     {
         $this->client->setAccessToken($token);

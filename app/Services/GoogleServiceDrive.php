@@ -27,9 +27,7 @@ final class GoogleServiceDrive extends Service
 
         $this->service = new GoogleServiceDriveBase($this->client);
 
-        $this->adapter = new GoogleDriveAdapter($this->service, 'root', [
-            'additionalFetchField' => 'trashed',
-        ]);
+        $this->adapter = new GoogleDriveAdapter($this->service);
 
         $this->storage = new Filesystem($this->adapter);
     }

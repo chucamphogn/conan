@@ -18,7 +18,7 @@ class CloudStorage extends Manager
     public function driver($driver = null): Service
     {
         if ($driver instanceof Provider) {
-            $driver = $driver->value;
+            $driver = $driver->getValue();
         }
 
         return parent::driver($driver);

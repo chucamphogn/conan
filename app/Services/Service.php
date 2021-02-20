@@ -17,5 +17,10 @@ abstract class Service
 
     protected Filesystem $storage;
 
+    /**
+     * Xử lý token và gán vào client.
+     *
+     * @param Token $token
+     */
     abstract public function setToken(Token $token);
 }
