@@ -10,6 +10,9 @@ require __DIR__ . '/auth.php';
 Route::middleware('auth')->group(function () {
     Route::get('/', [HomeController::class, 'index'])->name('dashboard');
 
+    // Dẫn đến trang thêm kho lưu trữ đám mây
+    Route::get('/add-cloud-storage', [HomeController::class, 'addCloudStorage'])->name('account.add-cloud-storage');
+
     // Xử lý thêm tài khoản Google
     Route::get('/account/add-account-google', [RegisterGoogleServiceController::class, 'redirectProviderLogin'])
         ->name('account.add-account-google');

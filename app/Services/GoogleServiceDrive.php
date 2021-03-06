@@ -44,6 +44,7 @@ final class GoogleServiceDrive extends Service
 
         $this->client->setAccessToken($token->toGoogleJsonStructure());
 
+        // FixMe: Xảy ra lỗi làm mới access_token khi refresh_token hết hạn. Buộc người dùng đăng nhập lại
         if ($this->client->isAccessTokenExpired() && $this->client->getRefreshToken()) {
             $refreshToken = $this->client->fetchAccessTokenWithRefreshToken($this->client->getRefreshToken());
             $token->update($refreshToken);
