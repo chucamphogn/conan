@@ -20,15 +20,13 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body class="font-sans antialiased">
-    <div class="flex flex-col min-h-screen dark:bg-gray-800 bg-gray-100 md:flex-row">
+    <div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800 md:flex-row">
         @include('layouts.navigation')
 
-        <div class="flex flex-col w-full">
-            <nav class="h-16 bg-white dark:bg-gray-900 hidden md:block">
-                <span>navbar</span>
-            </nav>
+        <div class="flex flex-col w-full md:pl-64 lg:pl-72 xl:pl-80">
+            @include('layouts.top-navigation')
 
-            <main>
+            <main class="z-0">
                 {{ $slot }}
             </main>
         </div>
