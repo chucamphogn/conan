@@ -124,6 +124,7 @@ docker-compose version 1.27.4, build 40524192
 Ở lần đầu tiên thì nó sẽ tự động setup môi trường lập trình cho mình, sẽ mất vài phút tuỳ thuộc vào tốc độ mạng
 
 ```bash
+cp .env.example .env
 ./vendor/bin/sail up -d
 ```
 
@@ -142,11 +143,7 @@ Creating cloud-storage-all-in-one_laravel.test_1 ... done
 ### 13. Cấu hình dự án (Nếu bước này hoàn thành thì có thể truy cập localhost để xem thành quả)
 
 ```bash
-cp .env.example .env
-./vendor/bin/sail artisan key:generate --ansi
-
 # Khởi tạo các tệp tin hỗ trợ PHPStorm
-./vendor/bin/sail artisan ide-helper:eloquent
 ./vendor/bin/sail artisan ide-helper:models -N
 
 # Cài đặt thư viện hỗ trợ front-end
