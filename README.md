@@ -166,9 +166,9 @@ docker volume rm $(docker volume ls -q)
 ![image](https://user-images.githubusercontent.com/58473133/108048874-24c2cf80-707a-11eb-9986-0bf1ec33dc3d.png)
 
 Để PHPStorm hỗ trợ tốt hơn hãy cài thêm một số plugin sau:
+- .env files support 
 - Laravel (Hỗ trợ Laravel)
 - Laravel Idea (Hỗ trợ Laravel)
-- Tailwind CSS Smart Completions (Hỗ trợ TailwindCSS)
 - Tailwind Formatter (Hỗ trợ TailwindCSS)
 - Material Theme UI (Nếu muốn giao diện đẹp)
 
@@ -188,3 +188,18 @@ Sau khi kết nối thành công, PHPStorm sẽ hiện bảng bên dưới để
 ![image](https://user-images.githubusercontent.com/58473133/108054830-be41af80-7081-11eb-9124-25778c6f7677.png)
 
 ### 16. PHPStorm đã tích hợp sẵn Git nên có thể thao tác trên giao diện thay vì sử dụng lệnh và không cần cài thêm Git lên Windows
+
+### 18. Cài đặt NodeJS lên Ubuntu 20.04
+
+```bash
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.37.2/install.sh | bash
+
+export NVM_DIR="$([ -z "${XDG_CONFIG_HOME-}" ] && printf %s "${HOME}/.nvm" || printf %s "${XDG_CONFIG_HOME}/nvm")" [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+
+nvm install node
+```
+
+![image](https://user-images.githubusercontent.com/58473133/110242666-af1b9680-7f89-11eb-9c2f-4506146c1c71.png)
+![image](https://user-images.githubusercontent.com/58473133/110242714-e427e900-7f89-11eb-9c29-472d78b33afd.png)
+![image](https://user-images.githubusercontent.com/58473133/110242774-1cc7c280-7f8a-11eb-9561-c0b3067201b8.png)
+
