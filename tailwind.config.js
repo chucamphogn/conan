@@ -12,7 +12,10 @@ module.exports = {
                 sans: ['Nunito', ...defaultTheme.fontFamily.sans],
             },
         },
-        colors
+        colors: {
+            ...colors,
+            transparent: 'transparent',
+        }
     },
 
     variants: {

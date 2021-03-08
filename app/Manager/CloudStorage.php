@@ -6,6 +6,7 @@ use App\Enums\Provider;
 use App\Services\DropboxService;
 use App\Services\GoogleServiceDrive;
 use App\Services\Service;
+use Illuminate\Filesystem\FilesystemAdapter;
 use Illuminate\Support\Manager;
 
 class CloudStorage extends Manager
@@ -15,7 +16,7 @@ class CloudStorage extends Manager
         return 'google';
     }
 
-    public function driver($driver = null): Service
+    public function driver($driver = null): Service | FilesystemAdapter
     {
         if ($driver instanceof Provider) {
             $driver = $driver->getValue();

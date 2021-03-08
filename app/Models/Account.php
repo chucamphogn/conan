@@ -24,6 +24,8 @@ class Account extends Model
         'provider' => Provider::class,
     ];
 
+    protected $hidden = ['access_token', 'refresh_token', 'expires_in'];
+
     public function user()
     {
         $this->belongsTo(User::class);

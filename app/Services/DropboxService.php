@@ -2,8 +2,10 @@
 
 namespace App\Services;
 
+use App\Enums\Provider;
 use App\Models\Token;
 use App\Services\Providers\Dropbox\DropboxClient;
+use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
 use Spatie\FlysystemDropbox\DropboxAdapter;
 
@@ -20,12 +22,12 @@ final class DropboxService extends Service
 
         $this->client = new DropboxClient([$clientId, $clientSecret]);
         $this->adapter = new DropboxAdapter($this->client);
-        $this->storage = new Filesystem($this->adapter, ['case_sensitive' => false]);
-    }
 
-    public function __call(string $name, array $arguments)
-    {
-        return call_user_func_array([$this->storage, $name], $arguments);
+        Storage::extend(Provider::DROPBOX()->getValue(), function () {
+            return new Filesystem($this->adapter, ['case_sensitive' => false]);
+        });
+
+        $this->storage = Storage::drive(Provider::DROPBOX()->getValue());
     }
 
     public function setToken(Token $token)

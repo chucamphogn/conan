@@ -2,11 +2,13 @@
 
 namespace App\Services;
 
+use App\Enums\Provider;
 use App\Models\Token;
 use Google\Exception as GoogleException;
 use Google_Client as GoogleClient;
 use Google_Service_Drive as GoogleServiceDriveBase;
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
+use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
 
 /**
@@ -16,6 +18,16 @@ use League\Flysystem\Filesystem;
 final class GoogleServiceDrive extends Service
 {
     private GoogleServiceDriveBase $service;
+
+    private array $additionalFetchField = [
+        'thumbnailLink',
+    ];
+
+    private array $defaultParams = [
+        // 'files.list' => [
+        //     'pageSize' => 15,
+        // ],
+    ];
 
     /**
      * @throws GoogleException
@@ -27,14 +39,16 @@ final class GoogleServiceDrive extends Service
 
         $this->service = new GoogleServiceDriveBase($this->client);
 
-        $this->adapter = new GoogleDriveAdapter($this->service);
+        $this->adapter = new GoogleDriveAdapter($this->service, 'root', [
+            'additionalFetchField' => join(',', $this->additionalFetchField),
+            'defaultParams' => $this->defaultParams,
+        ]);
 
-        $this->storage = new Filesystem($this->adapter);
-    }
+        Storage::extend(Provider::GOOGLE()->getValue(), function () {
+            return new Filesystem($this->adapter);
+        });
 
-    public function __call(string $name, array $arguments)
-    {
-        return call_user_func_array([$this->storage, $name], $arguments);
+        $this->storage = Storage::drive(Provider::GOOGLE()->getValue());
     }
 
     public function setToken(Token $token)
