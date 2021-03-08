@@ -24,8 +24,6 @@ class HomeController extends Controller
     }
 
     /**
-     * @dev Chỉ mới hiện các tệp tin để kiểm thử
-     *
      * @return View
      */
     public function index(): View
@@ -34,25 +32,32 @@ class HomeController extends Controller
         $accounts = auth()->user()->cloudStorageAccounts()->get();
 
         $directories = collect();
+        $files = collect();
 
         foreach ($accounts as $account) {
             $storage = CloudStorage::driver($account->provider);
             $storage->setToken($account->token());
 
-            /*
-             * Hiển thị 10 thư mục có thời gian thay đổi gần đây nhất nhưng Dropbox không cung cấp thời gian thay đổi
-             * của thư mục nên không thể sắp xếp được
-             *
-             * FixMe: Tìm cách hiển thị những thư mục có thời gian thay đổi gần đây nhất
-             */
-            collect($storage->allDirectories())
-                ->sortByDesc('timestamp')
-                ->take(self::MAX_NUMBER_OF_DIRECTORY - $directories->count())
-                ->each(function (array $directory) use ($account, $directories) {
-                    $directory['account'] = $account;
-                    $directories->add($directory);
-                });
+            // FixMe: Chưa tối ưu vì tốn rất nhiều request để lấy thông tin "Thời gian sửa đổi" của thư mục
+            collect($storage->allDirectories())->each(function (array $directory) use ($storage, $account, $directories) {
+                /*
+                 * Nếu thư mục không được cung cấp "Thời gian sửa đổi" thì sẽ lấy thời gian của các tệp tin của
+                 * thư mục đó làm "Thời gian sửa đổi" cho thư mục
+                 */
+                if (!isset($directory['timestamp'])) {
+                    $lastModified = collect($storage->listContents($directory['path'], true))->max('timestamp');
+                    $directory['timestamp'] = $lastModified;
+                }
+
+                // Gán tài khoản kho lưu trữ để phân biệt
+                $directory['account'] = $account;
+
+                $directories->add($directory);
+            });
         }
+
+        // Sau khi đã có đủ 10 thư mục từ các kho lưu trữ khác nhau thì sẽ sắp xếp lại lần nữa
+        $directories = $directories->sortByDesc('timestamp')->take(self::MAX_NUMBER_OF_DIRECTORY);
 
         return view('pages.dashboard', compact('directories', 'files'));
     }
