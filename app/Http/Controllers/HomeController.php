@@ -14,6 +14,11 @@ class HomeController extends Controller
     private const MAX_NUMBER_OF_DIRECTORY = 10;
 
     /**
+     * Số lượng tệp tin tối đa sẽ hiển thị trên giao diện.
+     */
+    private const MAX_NUMBER_OF_FILE = 10;
+
+    /**
      * Chuyển đến trang thêm tài khoản lưu trữ đám mây.
      *
      * @return View
@@ -24,6 +29,8 @@ class HomeController extends Controller
     }
 
     /**
+     * Trang chủ hiển thị các thư mục, tệp tin được chỉnh sửa gần đây nhất từ các kho lưu trữ.
+     *
      * @return View
      */
     public function index(): View
@@ -31,34 +38,44 @@ class HomeController extends Controller
         /** @var Account[] $accounts */
         $accounts = auth()->user()->cloudStorageAccounts()->get();
 
+        // Danh sách thư mục được chỉnh sửa gần đây
         $directories = collect();
+
+        // Danh sách tệp tin được chỉnh sửa gần đây
         $files = collect();
 
         foreach ($accounts as $account) {
             $storage = CloudStorage::driver($account->provider);
             $storage->setToken($account->token());
 
-            // FixMe: Chưa tối ưu vì tốn rất nhiều request để lấy thông tin "Thời gian sửa đổi" của thư mục
-            foreach ($storage->allDirectories(recursive: false) as $directory) {
-                /*
-                 * Nếu thư mục không được cung cấp "Thời gian sửa đổi" thì sẽ lấy thời gian của các tệp tin của
-                 * thư mục đó làm "Thời gian sửa đổi" cho thư mục
-                 */
-                if (!isset($directory['timestamp'])) {
-                    $lastModified = collect($storage->listContents($directory['path'], true))->max('timestamp');
-                    $directory['timestamp'] = $lastModified;
-                }
+            $files->add(
+                $storage->recentlyModifiedFiles()->map(function (array $file) use ($account) {
+                    $file['account'] = $account;
 
-                // Gán tài khoản kho lưu trữ để phân biệt
-                $directory['account'] = $account;
+                    return $file;
+                })
+            );
 
-                $directories->add($directory);
-            }
+            $directories->add(
+                $storage->recentlyModifiedDirectories()->map(function (array $directory) use ($account) {
+                    $directory['account'] = $account;
+
+                    return $directory;
+                })
+            );
         }
 
-        // Sau khi đã có đủ 10 thư mục từ các kho lưu trữ khác nhau thì sẽ sắp xếp lại lần nữa
-        $directories = $directories->sortByDesc('timestamp')->take(self::MAX_NUMBER_OF_DIRECTORY);
+        // Sau khi đã lấy đủ thư mục, tệp tin từ các kho lưu trữ khác nhau thì sẽ sắp xếp lại lần nữa
+        $files = $files->collapse()
+            ->sortByDesc('timestamp')
+            ->take(self::MAX_NUMBER_OF_FILE)
+            ->toArray();
 
-        return view('pages.dashboard', compact('directories', 'files'));
+        $directories = $directories->collapse()
+            ->sortByDesc('timestamp')
+            ->take(self::MAX_NUMBER_OF_DIRECTORY)
+            ->toArray();
+
+        return view('pages.dashboard', compact('files', 'directories'));
     }
 }

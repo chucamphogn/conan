@@ -8,7 +8,9 @@ use Google\Exception as GoogleException;
 use Google_Client as GoogleClient;
 use Google_Service_Drive as GoogleServiceDriveBase;
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Str;
 use League\Flysystem\Filesystem;
 
 /**
@@ -71,5 +73,16 @@ final class GoogleServiceDrive extends Service
     public function clearCache()
     {
         $this->client->getCache()->clear();
+    }
+
+    public function recentlyModifiedFiles(int $limit = 10): Collection
+    {
+        return parent::recentlyModifiedFiles()
+            ->map(function ($file) {
+                // Thay đổi kích thước ảnh sang 500x500
+                $file['thumbnailLink'] = Str::replaceLast('s220', 's500', $file['thumbnailLink']);
+
+                return $file;
+            });
     }
 }
