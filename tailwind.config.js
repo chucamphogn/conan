@@ -21,6 +21,8 @@ module.exports = {
     variants: {
         extend: {
             opacity: ['disabled'],
+            fill: ['dark'],
+            borderWidth: ['dark', 'hover', 'focus'],
         },
     },
 

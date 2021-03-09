@@ -29,13 +29,14 @@ abstract class Service
     /**
      * Lấy toàn bộ thư mục có trên kho lưu trữ.
      *
-     * @param null|string $directory
+     * @param null|string $directory Lấy n thư mục trong $directory, nếu để trống thì sẽ duyệt từ root
+     * @param bool        $recursive Cho phép duyệt đệ quy để lấy luôn những thư mục con
      *
-     * @return array
+     * @return array Danh sách thư mục
      */
-    public function allDirectories(?string $directory = null): array
+    public function allDirectories(?string $directory = null, bool $recursive = true): array
     {
-        $contents = $this->storage->listContents($directory, true);
+        $contents = $this->storage->listContents($directory, $recursive);
 
         return $this->filterContentsByType($contents, 'dir');
     }

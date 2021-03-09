@@ -20,7 +20,7 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 </head>
 <body class="font-sans antialiased">
-    <div class="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-800 md:flex-row">
+    <div class="flex flex-col min-h-screen bg-gray-100 dark:text-gray-200 dark:bg-gray-800 md:flex-row">
         @include('layouts.navigation')
 
         <div class="flex flex-col w-full md:pl-64 lg:pl-72 xl:pl-80">

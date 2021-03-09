@@ -39,7 +39,7 @@ class HomeController extends Controller
             $storage->setToken($account->token());
 
             // FixMe: Chưa tối ưu vì tốn rất nhiều request để lấy thông tin "Thời gian sửa đổi" của thư mục
-            collect($storage->allDirectories())->each(function (array $directory) use ($storage, $account, $directories) {
+            foreach ($storage->allDirectories(recursive: false) as $directory) {
                 /*
                  * Nếu thư mục không được cung cấp "Thời gian sửa đổi" thì sẽ lấy thời gian của các tệp tin của
                  * thư mục đó làm "Thời gian sửa đổi" cho thư mục
@@ -53,7 +53,7 @@ class HomeController extends Controller
                 $directory['account'] = $account;
 
                 $directories->add($directory);
-            });
+            }
         }
 
         // Sau khi đã có đủ 10 thư mục từ các kho lưu trữ khác nhau thì sẽ sắp xếp lại lần nữa
