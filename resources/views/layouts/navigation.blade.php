@@ -4,7 +4,7 @@
      */
 @endphp
 
-<aside class='sticky top-0 z-50 w-full shadow-lg md:flex md:flex-row md:min-h-screen md:w-auto md:fixed'>
+<aside class='sticky top-0 z-50 w-full shadow-sm md:flex md:flex-row md:min-h-screen md:w-auto md:fixed'>
     <div @click.away='open = false' x-data='{ open: false }'
          class='flex flex-col flex-shrink-0 w-full text-gray-700 bg-white md:w-64 lg:w-72 xl:w-80 dark:text-gray-200 dark:bg-gray-900'>
 

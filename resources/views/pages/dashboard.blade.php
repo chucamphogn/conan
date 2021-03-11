@@ -1,18 +1,19 @@
 @php
     /**
      * @var array $directories
+     * @var array $files
      */
 @endphp
 
 <x-app-layout>
     <div class='my-6'>
-        <div class='mx-auto sm:px-6 lg:px-8 overflow-hidden'>
+        <div class='overflow-hidden mx-auto sm:px-6 lg:px-8'>
             <div class='flex flex-col gap-10 p-6'>
                 {{-- Thư mục --}}
                 <div class='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5'>
-                    <div class='col-span-2 text-sm font-semibold lg:col-span-3 xl:col-span-5'>Thư mục</div>
+                    <div class='col-span-full text-sm font-semibold'>Thư mục</div>
 
-                    @foreach ($directories as $directory)
+                    @forelse ($directories as $directory)
                         @php
                             /** @var \App\Models\Account $account */
                             $account = $directory['account'];
@@ -34,14 +35,16 @@
                             <span class='text-sm font-semibold truncate'>{{ $directory['name'] ?? $directory['path'] }}</span>
                             <span class='text-xs text-gray-400 truncate'>{{ $directory['account']['email'] }}</span>
                         </a>
-                    @endforeach
+                    @empty
+                        <span class='col-span-full text-sm text-center'>Không có dữ liệu</span>
+                    @endforelse
                 </div>
 
                 {{-- Hiển thị các tệp tin khác ngoại trừ thư mục --}}
                 <div class='grid grid-cols-2 gap-4 lg:grid-cols-3 xl:grid-cols-5'>
-                    <div class='col-span-2 text-sm font-semibold lg:col-span-3 xl:col-span-5'>Tệp</div>
+                    <div class='col-span-full text-sm font-semibold'>Tệp</div>
 
-                    @foreach ($files as $file)
+                    @forelse ($files as $file)
                         @php
                             /** @var \App\Models\Account $account */
                             $account = $file['account'];
@@ -69,7 +72,9 @@
                                 <div class='text-xs text-gray-400 truncate'>{{ $account->email }}</div>
                             </div>
                         </a>
-                    @endforeach
+                    @empty
+                        <span class='col-span-full text-sm text-center'>Không có dữ liệu</span>
+                    @endforelse
                 </div>
             </div>
         </div>
