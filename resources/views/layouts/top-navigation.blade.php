@@ -24,7 +24,7 @@
                 {{-- TODO: Gán liên kết cho "Cài đặt" --}}
                 <x-dropdown-link href="#">Cài đặt</x-dropdown-link>
 
-                <x-dropdown-link :href="route('logout')" @click.prevent='document.getElementById("logout-form").submit();'>
+                <x-dropdown-link :href="route('logout')" onclick="document.getElementById('logout-form').submit();">
                     Đăng xuất
                 </x-dropdown-link>
 
