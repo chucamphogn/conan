@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Providers\Dropbox;
+namespace App\Services\Dropbox;
 
 use App\Models\Token as BaseToken;
 use JetBrains\PhpStorm\Pure;
@@ -9,7 +9,7 @@ use Spatie\Dropbox\TokenProvider;
 /**
  * Tuỳ chỉnh lại lớp Token cho phù hợp với Dropbox Client.
  */
-class Token extends BaseToken implements TokenProvider
+final class Token extends BaseToken implements TokenProvider
 {
     public function __construct(BaseToken $token)
     {

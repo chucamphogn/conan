@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Services\Providers\Dropbox;
+namespace App\Services\Dropbox;
 
 use App\Models\Token as BaseToken;
 use Illuminate\Support\Facades\Http;
@@ -12,7 +12,7 @@ use Spatie\Dropbox\Client;
  * Do lớp Spatie\Dropbox\Client để tokenProvider ở private nên phải dùng Reflection để có thể thao tác với
  * tokenProvider trong lớp Spatie\Dropbox\Client.
  */
-class DropboxClient extends Client
+final class DropboxClient extends Client
 {
     /**
      * Lấy access token từ client.

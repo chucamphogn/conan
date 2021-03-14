@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Dropbox;
 
 use App\Enums\Provider;
 use App\Models\Token;
-use App\Services\Providers\Dropbox\DropboxClient;
+use App\Services\Service;
 use Exception;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Cache;
@@ -49,36 +49,37 @@ final class DropboxService extends Service
 
     public function recentlyModifiedFiles(int $limit = 10): Collection
     {
-        return parent::recentlyModifiedFiles()
-            /*
-             * Lấy thumbnail của tệp tin
-             * @see https://www.dropbox.com/developers/documentation/http/documentation#files-get_thumbnail
-             */
-            ->map(function ($file) {
-                // Dropbox không hỗ trợ tạo thumbnail với những tệp tin >= 20MB
-                if ($file['size'] >= 20_000_000) {
-                    return $file;
-                }
-
-                $thumbnailLink = Cache::remember(md5($file['path']), 120, function () use ($file) {
-                    try {
-                        // Dropbox trả hình ảnh về ở dạng binary, cần chuyển về base64 để hiển thị lên website
-                        $image = $this->client->getThumbnail($file['path'], size: Client::THUMBNAIL_SIZE_L);
-
-                        return 'data:image/jpeg;base64,' . base64_encode($image);
-                    } catch (Exception) {
-                        /*
-                         * Trả về '' để cache, nếu để null thì không thể cache được
-                         * '' có nghĩa là tệp tin này không có thumbnail
-                         */
-                        return '';
-                    }
-                });
-
-                $file['thumbnailLink'] = empty($thumbnailLink) ? null : $thumbnailLink;
-
+        return parent::recentlyModifiedFiles()->map(function (array $file) {
+            // Dropbox không hỗ trợ tệp tin >= 20MB nên không cần request lên Dropbox để lấy hình ảnh
+            if ($file['size'] >= 20_000_000) {
                 return $file;
+            }
+
+            // Lấy thumbnail của tệp tin
+            // @see https://www.dropbox.com/developers/documentation/http/documentation#files-get_thumbnail
+            $cacheKey = md5($file['path']);
+            $twoMinutes = 120;
+
+            // Lấy hình ảnh từ cache, nếu không có thì sẽ request lên Dropbox để lấy hình ảnh
+            $thumbnailLink = Cache::remember($cacheKey, $twoMinutes, function () use ($file) {
+                try {
+                    // Dropbox trả hình ảnh về ở dạng binary, cần chuyển về base64 để hiển thị lên website
+                    $image = $this->client->getThumbnail($file['path'], size: Client::THUMBNAIL_SIZE_L);
+
+                    return 'data:image/jpeg;base64,' . base64_encode($image);
+                } catch (Exception) {
+                    /*
+                     * Trả về '' để cache, nếu để null thì không thể cache được
+                     * '' có nghĩa là tệp tin này không có thumbnail
+                     */
+                    return '';
+                }
             });
+
+            $file['thumbnailLink'] = empty($thumbnailLink) ? null : $thumbnailLink;
+
+            return $file;
+        });
     }
 
     public function recentlyModifiedDirectories(int $limit = 10): Collection
@@ -90,9 +91,8 @@ final class DropboxService extends Service
          * FixMe: Chưa tối ưu vì tốn rất nhiều request để lấy thông tin "Thời gian sửa đổi" của thư mục
          */
         return collect($this->directories())
-            ->map(function ($directory) {
-                $lastModified = collect($this->allFiles($directory['path']))->max('timestamp');
-                $directory['timestamp'] = $lastModified;
+            ->map(function (array $directory) {
+                $directory['timestamp'] = collect($this->allFiles($directory['path']))->max('timestamp');
 
                 return $directory;
             })

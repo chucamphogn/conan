@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Services;
+namespace App\Services\Google;
 
 use App\Enums\Provider;
 use App\Models\Token;
+use App\Services\Service;
 use Google\Exception as GoogleException;
 use Google_Client as GoogleClient;
 use Google_Service_Drive as GoogleServiceDriveBase;
