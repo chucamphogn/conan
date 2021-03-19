@@ -9,8 +9,10 @@ use Google\Exception as GoogleException;
 use Google_Client as GoogleClient;
 use Google_Service_Drive as GoogleServiceDriveBase;
 use Hypweb\Flysystem\GoogleDrive\GoogleDriveAdapter;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
+use ReflectionMethod;
 
 /**
  * @property GoogleClient       $client
@@ -72,5 +74,27 @@ final class GoogleServiceDrive extends Service
     public function clearCache()
     {
         $this->client->getCache()->clear();
+    }
+
+    /** @noinspection PhpUnhandledExceptionInspection */
+    public function recentlyModifiedFiles(int $limit = 10): Collection
+    {
+        $normaliseObject = new ReflectionMethod($this->adapter::class, 'normaliseObject');
+        $normaliseObject->setAccessible(true);
+
+        $response = $this->service->files->listFiles([
+            'pageSize' => $limit,
+            'q' => 'mimeType != "application/vnd.google-apps.folder"',
+            'fields' => 'files(id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,webViewLink,thumbnailLink)',
+            'orderBy' => 'modifiedTime desc',
+        ]);
+
+        $files = collect();
+
+        foreach ($response->getFiles() as $file) {
+            $files[] = $normaliseObject->invoke($this->adapter, $file, null);
+        }
+
+        return $files;
     }
 }
