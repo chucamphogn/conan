@@ -27,9 +27,24 @@
             @include('layouts.top-navigation')
 
             <main class="z-0">
+                {{-- Global context menu --}}
+                <div data-file-manager-global-context-menu class='flex hidden overflow-hidden absolute z-20 flex-col w-56 bg-gray-100 rounded-lg shadow-2xl'>
+                    <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
+                        <i class='mr-4 bx bx-rename'></i>
+                        <span class='truncate'>Tải lên</span>
+                    </div>
+                    <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
+                        <i class='mr-4 bx bx-rename'></i>
+                        <span class='truncate'>Tải xuống</span>
+                    </div>
+                </div>
+
                 {{ $slot }}
             </main>
         </div>
     </div>
+
+    {{-- Modal đổi tên tệp tin, thư mục --}}
+    @include('layouts.rename-modal')
 </body>
 </html>

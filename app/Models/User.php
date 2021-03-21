@@ -98,4 +98,23 @@ class User extends Authenticatable
             'expires_in' => $userSocialite->expiresIn,
         ]);
     }
+
+    /**
+     * Lấy token của tài khoản dựa vào địa chỉ email và kho lưu trữ.
+     *
+     * @param string $email
+     * @param string $provider
+     *
+     * @return \App\Models\Token
+     */
+    public function getTokenOf(string $email, string $provider): Token
+    {
+        /** @var \App\Models\Account $account */
+        $account = auth()->user()->cloudStorageAccounts()
+            ->where('email', $email)
+            ->where('provider', $provider)
+            ->sole();
+
+        return $account->token();
+    }
 }

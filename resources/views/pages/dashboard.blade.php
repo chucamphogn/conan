@@ -39,23 +39,7 @@
 
                             {{-- Menu chuột phải --}}
                             <div data-file-manager-item-context-menu class='flex hidden overflow-hidden absolute z-20 flex-col w-56 bg-gray-100 rounded-lg shadow-2xl'>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
+                                <div data-action='rename' x-data @click="$dispatch('open-rename-modal', { email: '{{ $account->email }}', provider: '{{ $account->provider }}', path: '{{ $directory['path'] }}', name: '{{ $directory['name'] ?? $directory['path'] }}' })" class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
                                     <i class='mr-4 bx bx-rename'></i>
                                     <span class='truncate'>Đổi tên</span>
                                 </div>
@@ -87,7 +71,7 @@
 
                         {{-- TODO: Gắn liên kết cho thẻ anchor --}}
                         <div data-file-manager-item class='relative bg-white rounded-lg border transition duration-300 ease-in-out dark:bg-gray-700 dark:border-0 group hover:bg-blue-100 focus:bg-blue-100 hover:border-transparent focus:border-transparent dark:hover:bg-gray-600 dark:focus:bg-gray-600'>
-                            <a href='#' class='flex flex-col' title='{{ $file['filename'] }}.{{ $file['extension'] }} - {{ $account->email }}'>
+                            <a href='#' class='flex overflow-hidden flex-col rounded-t-lg' title='{{ $file['filename'] }}.{{ $file['extension'] }} - {{ $account->email }}'>
                                 <img class='absolute p-1 m-4 w-8 h-8 bg-gray-200 bg-opacity-50 rounded-lg transition duration-300 ease-in-out dark:bg-gray-100 group-hover:bg-white dark:group-hover:bg-gray-300' src='{{ $iconUrl }}' alt='{{ Str::ucfirst($provider) }}'>
                                 @isset($file['thumbnailLink'])
                                     <img src="{{ $file['thumbnailLink'] }}" alt='{{ $file['filename'] }}.{{ $file['extension'] }}' class='w-full h-48'>
@@ -102,23 +86,7 @@
 
                             {{-- Menu chuột phải --}}
                             <div data-file-manager-item-context-menu class='flex hidden overflow-hidden absolute z-20 flex-col w-56 bg-gray-100 rounded-lg shadow-2xl'>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
-                                    <i class='mr-4 bx bx-rename'></i>
-                                    <span class='truncate'>Đổi tên</span>
-                                </div>
-                                <div class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
+                                <div data-action='rename' x-data @click="$dispatch('open-rename-modal', { email: '{{ $account->email }}', provider: '{{ $account->provider }}', path: '{{ $file['path'] }}', name: '{{ $file['filename'] }}.{{ $file['extension'] }}' })" class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
                                     <i class='mr-4 bx bx-rename'></i>
                                     <span class='truncate'>Đổi tên</span>
                                 </div>
@@ -131,46 +99,4 @@
             </div>
         </div>
     </div>
-
-    <script>
-        (() => {
-            /**
-             * Xử lý khi click ra bên ngoài thì sẽ ẩn menu
-             */
-            const hiddenCtxMenuWhenClickOutside = e => {
-                const listCtxMenu = [...document.querySelectorAll('[data-file-manager-item-context-menu]')];
-
-                if (!listCtxMenu.includes(e.target.parentNode)) {
-                    const listCtxMenuIsShowing = document.querySelectorAll('[data-file-manager-item-context-menu]:not(.hidden)');
-                    listCtxMenuIsShowing.forEach(ctxMenu => ctxMenu.classList.add('hidden'));
-                }
-
-                document.removeEventListener('click', hiddenCtxMenuWhenClickOutside);
-            };
-
-            document.querySelectorAll('[data-file-manager-item]')
-                .forEach(item => {
-                    item.addEventListener('contextmenu', function (e) {
-                        e.preventDefault();
-
-                        document.querySelectorAll('[data-file-manager-item-context-menu]:not(.hidden)')
-                            .forEach(ctxMenu => ctxMenu.classList.add('hidden'));
-
-                        /**
-                         * @type {HTMLElement|null}
-                         */
-                        const ctxMenu = item.querySelector('[data-file-manager-item-context-menu]');
-                        const itemRect = item.getBoundingClientRect();
-
-                        if (ctxMenu !== null) {
-                            ctxMenu.style.top = `${e.clientY - itemRect.top}px`;
-                            ctxMenu.style.left = `${e.clientX - itemRect.left}px`;
-                            ctxMenu.classList.remove('hidden');
-                        }
-
-                        document.addEventListener('click', hiddenCtxMenuWhenClickOutside);
-                    }, false);
-                });
-        })();
-    </script>
 </x-app-layout>
