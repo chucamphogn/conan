@@ -84,7 +84,7 @@ final class GoogleServiceDrive extends Service
 
         $response = $this->service->files->listFiles([
             'pageSize' => $limit,
-            'q' => 'mimeType != "application/vnd.google-apps.folder"',
+            'q' => 'trashed = false and mimeType != "application/vnd.google-apps.folder"',
             'fields' => 'files(id,name,mimeType,modifiedTime,parents,permissions,size,webContentLink,webViewLink,thumbnailLink)',
             'orderBy' => 'modifiedTime desc',
         ]);
