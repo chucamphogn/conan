@@ -15,9 +15,7 @@
     // Đường dẫn cho thẻ anchor
     $href = route('directory.show', [$account->id, base64_encode($directory['path'])]);
 
-    // Ở Google Drive thì tên thư mục sẽ nằm ở "filename" nhưng ở Dropbox thì nó là "path"
-    $folderName = $directory['filename'] ?? $directory['path'];
-    $title = $folderName . ' - ' . $account->email;
+    $title = $directory['filename'] . ' - ' . $account->email;
 @endphp
 
 <a data-file-manager-item
@@ -33,14 +31,14 @@
                 <path d="M0 0h24v24H0z" fill="none" />
             </g>
         </svg>
-        <span class='text-sm font-semibold truncate'>{{ $folderName }}</span>
+        <span class='text-sm font-semibold truncate'>{{ $directory['filename'] }}</span>
         <span class='text-xs text-gray-400 truncate'>{{ $account->email }}</span>
     </div>
 
     {{-- Menu chuột phải --}}
     <div data-file-manager-item-context-menu class='flex hidden overflow-hidden absolute z-20 flex-col w-56 bg-gray-100 rounded-lg shadow-2xl'>
         <div data-action='rename' x-data
-             @click="$dispatch('open-rename-modal', { email: '{{ $account->email }}', provider: '{{ $account->provider }}', path: '{{ $directory['path'] }}', name: '{{ $directory['name'] ?? $directory['path'] }}' })"
+             @click="$dispatch('open-rename-modal', { email: '{{ $account->email }}', provider: '{{ $account->provider }}', path: '{{ $directory['path'] }}', name: '{{ $directory['filename'] }}' })"
              class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
             <i class='mr-4 bx bx-rename'></i>
             <span class='truncate'>Đổi tên</span>
