@@ -68,13 +68,11 @@ class HomeController extends Controller
         // Sau khi đã lấy đủ thư mục, tệp tin từ các kho lưu trữ khác nhau thì sẽ sắp xếp lại lần nữa
         $files = $files->collapse()
             ->sortByDesc('timestamp')
-            ->take(self::MAX_NUMBER_OF_FILE)
-            ->toArray();
+            ->take(self::MAX_NUMBER_OF_FILE);
 
         $directories = $directories->collapse()
             ->sortByDesc('timestamp')
-            ->take(self::MAX_NUMBER_OF_DIRECTORY)
-            ->toArray();
+            ->take(self::MAX_NUMBER_OF_DIRECTORY);
 
         return view('pages.dashboard', compact('files', 'directories'));
     }

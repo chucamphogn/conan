@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\API\FileController;
+use App\Http\Controllers\DirectoryController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Services\RegisterDropboxServiceController;
 use App\Http\Controllers\Services\RegisterGoogleServiceController;
@@ -26,4 +27,8 @@ Route::middleware('auth')->group(function () {
 
     // Thay đổi tên tệp tin, thư mục
     Route::put('files/rename', [FileController::class, 'rename']);
+
+    // Mở thư mục
+    Route::get('directory/{account}/{path}', [DirectoryController::class, 'show'])
+        ->name('directory.show');
 });
