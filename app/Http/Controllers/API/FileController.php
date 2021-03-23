@@ -3,12 +3,14 @@
 namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
+use App\Models\Account;
 use Facades\App\Manager\CloudStorage;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use League\Flysystem\FileExistsException;
 use League\Flysystem\FileNotFoundException;
+use Symfony\Component\HttpFoundation\StreamedResponse;
 
 class FileController extends Controller
 {
@@ -57,5 +59,27 @@ class FileController extends Controller
                 'message' => 'Không tìm thấy tệp tin cần đổi tên.',
             ], Response::HTTP_NOT_FOUND);
         }
+    }
+
+    /**
+     * Tải xuống tệp tin, không tải được thư mục.
+     *
+     * @param \Illuminate\Http\Request $request
+     * @param \App\Models\Account      $account
+     *
+     * @return \Symfony\Component\HttpFoundation\StreamedResponse
+     */
+    public function download(Request $request, Account $account): StreamedResponse
+    {
+        /** @var string $path */
+        $path = $request->input('path');
+
+        /** @var string $basename */
+        $basename = $request->input('basename');
+
+        $storage = CloudStorage::driver($account->provider);
+        $storage->setToken($account->token());
+
+        return $storage->download($path, $basename);
     }
 }

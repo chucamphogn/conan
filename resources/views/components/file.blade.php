@@ -35,5 +35,14 @@
             <i class='mr-4 bx bx-rename'></i>
             <span class='truncate'>Đổi tên</span>
         </div>
+
+        @php
+            $params = Arr::only($file, ['path', 'basename']);
+            $downloadUrl = route('files.download', array_merge([$account], $params));
+        @endphp
+        <a data-action='download' href="{{ $downloadUrl }}" download class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
+            <i class='mr-4 bx bx-cloud-download'></i>
+            <span class='truncate'>Tải xuống</span>
+        </a>
     </div>
 </div>

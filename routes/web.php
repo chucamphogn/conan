@@ -25,8 +25,13 @@ Route::middleware('auth')->group(function () {
         ->name('account.add-account-dropbox');
     Route::get('/account/dropbox-callback', [RegisterDropboxServiceController::class, 'handleProviderCallback']);
 
-    // Thay đổi tên tệp tin, thư mục
-    Route::put('files/rename', [FileController::class, 'rename']);
+    Route::prefix('files')->name('files.')->group(function () {
+        // Tải tệp tin
+        Route::get('download/{account}', [FileController::class, 'download'])->name('download');
+
+        // Thay đổi tên tệp tin, thư mục
+        Route::put('rename', [FileController::class, 'rename'])->name('rename');
+    });
 
     // Mở thư mục
     Route::get('directory/{account}/{path}', [DirectoryController::class, 'show'])

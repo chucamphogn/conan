@@ -38,7 +38,7 @@
     {{-- Menu chuột phải --}}
     <div data-file-manager-item-context-menu class='flex hidden overflow-hidden absolute z-20 flex-col w-56 bg-gray-100 rounded-lg shadow-2xl'>
         <div data-action='rename' x-data
-             @click="$dispatch('open-rename-modal', { email: '{{ $account->email }}', provider: '{{ $account->provider }}', path: '{{ $directory['path'] }}', name: '{{ $directory['filename'] }}' })"
+             @click.prevent="$dispatch('open-rename-modal', { email: '{{ $account->email }}', provider: '{{ $account->provider }}', path: '{{ $directory['path'] }}', name: '{{ $directory['filename'] }}' })"
              class='flex items-center py-2 px-4 transition duration-500 ease-in-out cursor-pointer hover:bg-blue-200 focus:bg-blue-200'>
             <i class='mr-4 bx bx-rename'></i>
             <span class='truncate'>Đổi tên</span>

@@ -37,14 +37,14 @@ function handleHiddenLocalCtxMenuWhenClickOutside(event: Event) {
  * TODO: Xử lý các thao tác trong context menu
  */
 function handleCtxMenuAction(event: MouseEvent) {
-    event.preventDefault();
+    const currentTarget = event.currentTarget as HTMLDivElement;
 
-    // const currentTarget = event.currentTarget as HTMLDivElement;
-
-    // switch (currentTarget.dataset.action) {
-    //     case 'rename':
-    //         break;
-    // }
+    switch (currentTarget.dataset.action) {
+        // case 'rename':
+        //     break;
+        // case 'download':
+        //     break;
+    }
 
     hiddenLocalCtxMenu();
 }
