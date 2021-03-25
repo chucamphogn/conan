@@ -67,11 +67,8 @@
 
     <rule ref="Generic.WhiteSpace.ArbitraryParenthesesSpacing"/>
     <rule ref="Generic.WhiteSpace.DisallowSpaceIndent"/>
-    <rule ref="Generic.WhiteSpace.ScopeIndent">
-        <properties>
-            <property name="tabIndent" value="true"/>
-        </properties>
-    </rule>
+    <rule ref="Generic.WhiteSpace.ScopeIndent"/>
+    <rule ref="Generic.WhiteSpace.SpreadOperatorSpacingAfter"/>
 
     <rule ref="PSR2"/>
 
