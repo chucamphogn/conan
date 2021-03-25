@@ -13,7 +13,7 @@ use Illuminate\Support\Facades\Storage;
 use League\Flysystem\Filesystem;
 
 /**
- * @property GoogleClient       $client
+ * @property GoogleClient $client
  * @property GoogleDriveAdapter $adapter
  */
 final class GoogleServiceDrive extends Service
