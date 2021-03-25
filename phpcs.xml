@@ -20,6 +20,7 @@
     <exclude-pattern>*/docs/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
+    <exclude name="PSR2.Methods.FunctionCallSignature.Indent"/>
     <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine"/>
 
     <arg name="report" value="full"/>
