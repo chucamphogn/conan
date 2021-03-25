@@ -2,6 +2,31 @@
 <ruleset name="Laravel Standards">
     <description>The Laravel Coding Standards</description>
 
+    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
+    <rule ref="Generic.Classes.DuplicateClassName"/>
+    <rule ref="Generic.CodeAnalysis.EmptyStatement">
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedIf"/>
+        <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedElseif"/>
+    </rule>
+    <rule ref="Generic.CodeAnalysis.ForLoopShouldBeWhileLoop"/>
+    <rule ref="Generic.CodeAnalysis.UnconditionalIfStatement"/>
+    <rule ref="Generic.CodeAnalysis.UnnecessaryFinalModifier"/>
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+    <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
+
+    <rule ref="Generic.Commenting.DocComment"/>
+    <rule ref="Generic.Commenting.Fixme"/>
+    <rule ref="Generic.Commenting.Todo"/>
+
+    <rule ref="PSR2"/>
+
+    <rule ref="PSR12">
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.LineIndent"/>
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine"/>
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.CloseParenthesisLine"/>
+    </rule>
+
     <file>app</file>
     <file>config</file>
     <file>database</file>
@@ -26,15 +51,5 @@
     <arg value="p"/>
 
     <ini name="memory_limit" value="128M"/>
-
-    <rule ref="Generic" />
-
-    <rule ref="PSR2"/>
-
-    <rule ref="PSR12">
-        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.LineIndent"/>
-        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine"/>
-        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.CloseParenthesisLine"/>
-    </rule>
 
 </ruleset>
