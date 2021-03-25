@@ -2,7 +2,6 @@
 <ruleset name="Laravel Standards">
     <description>The Laravel Coding Standards</description>
 
-    <rule ref="Generic.Arrays.DisallowLongArraySyntax"/>
     <rule ref="Generic.Classes.DuplicateClassName"/>
     <rule ref="Generic.CodeAnalysis.EmptyStatement">
         <exclude name="Generic.CodeAnalysis.EmptyStatement.DetectedCatch"/>
