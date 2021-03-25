@@ -20,9 +20,6 @@
     <exclude-pattern>*/docs/*</exclude-pattern>
     <exclude-pattern>*/vendor/*</exclude-pattern>
 
-    <exclude name="PSR2.Methods.FunctionCallSignature.Indent"/>
-    <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine"/>
-
     <arg name="report" value="full"/>
     <arg name="colors"/>
     <arg value="p"/>
@@ -30,6 +27,9 @@
     <ini name="memory_limit" value="128M"/>
 
     <rule ref="PSR2"/>
-    <rule ref="PSR12"/>
+
+    <rule ref="PSR12">
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine"/>
+    </rule>
 
 </ruleset>
