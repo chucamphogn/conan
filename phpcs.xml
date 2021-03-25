@@ -26,6 +26,7 @@
 
     <ini name="memory_limit" value="128M"/>
 
-    <rule ref="Symfony"/>
+    <rule ref="PSR2"/>
+    <rule ref="PSR12"/>
 
 </ruleset>
