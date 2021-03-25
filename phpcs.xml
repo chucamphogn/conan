@@ -10,6 +10,7 @@
     <file>tests</file>
 
     <exclude-pattern>*/public/*</exclude-pattern>
+    <exclude-pattern>*/migrations/*</exclude-pattern>
     <exclude-pattern>*/cache/*</exclude-pattern>
     <exclude-pattern>*/*.js</exclude-pattern>
     <exclude-pattern>*/*.css</exclude-pattern>
@@ -29,7 +30,9 @@
     <rule ref="PSR2"/>
 
     <rule ref="PSR12">
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.LineIndent"/>
         <exclude name="PSR12.ControlStructures.ControlStructureSpacing.FirstExpressionLine"/>
+        <exclude name="PSR12.ControlStructures.ControlStructureSpacing.CloseParenthesisLine"/>
     </rule>
 
 </ruleset>
