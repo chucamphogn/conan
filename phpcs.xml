@@ -27,6 +27,8 @@
 
     <ini name="memory_limit" value="128M"/>
 
+    <rule rel="Generic" />
+
     <rule ref="PSR2"/>
 
     <rule ref="PSR12">
