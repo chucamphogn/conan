@@ -34,6 +34,7 @@ class EmailVerificationTest extends TestCase
         Event::fake();
 
         $user = User::factory()->create([
+            'id' => \Str::uuid(),
             'email_verified_at' => null,
         ]);
 
