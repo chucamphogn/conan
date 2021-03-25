@@ -73,6 +73,8 @@ jobs:
               env:
                   DB_PORT: ${{ job.services.postgres.ports[5432] }}
                   REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
+            - name: PHPCodeSniffer
+              uses: rtCamp/action-phpcs-inspection@v1.0.0
             - name: Test with phpunit
               run: vendor/bin/phpunit --coverage-text
               env:
