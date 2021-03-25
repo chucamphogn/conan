@@ -75,7 +75,7 @@ jobs:
                   REDIS_PORT: ${{ job.services.redis.ports['6379'] }}
             - name: Check PHP code style
               continue-on-error: false
-              run: phpcs --standard=phpcs.xml
+              run: phpcs -s --standard=phpcs.xml
             - name: Test with phpunit
               run: vendor/bin/phpunit --coverage-text
               env:
