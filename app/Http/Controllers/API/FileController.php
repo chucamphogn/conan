@@ -23,10 +23,10 @@ class FileController extends Controller
      */
     public function rename(Request $request): JsonResponse
     {
-        /** @var string $email */
+        /* @var string $email */
         $email = $request->input('email');
 
-        /** @var string $provider */
+        /* @var string $provider */
         $provider = $request->input('provider');
 
         // Xác định kho lưu trữ và lấy token của tài khoản để thao tác
