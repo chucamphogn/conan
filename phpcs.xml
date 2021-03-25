@@ -15,8 +15,12 @@
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
     <rule ref="Generic.CodeAnalysis.UselessOverridingMethod"/>
 
-    <rule ref="Generic.Commenting.Fixme"/>
-    <rule ref="Generic.Commenting.Todo"/>
+    <rule ref="Generic.Commenting.Fixme">
+        <type>warning</type>
+    </rule>
+    <rule ref="Generic.Commenting.Todo">
+        <type>warning</type>
+    </rule>
 
     <rule ref="PSR2"/>
 
