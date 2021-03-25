@@ -43,7 +43,7 @@ trait Uuid
 
             // Nếu có sự khác biệt thì sẽ gán lại UUID cũ
             if ($originalKey->isNotEmpty()) {
-                if (!$originalKey->exactly($model->getKey())) {
+                if (! $originalKey->exactly($model->getKey())) {
                     $model->setAttribute($model->getKeyName(), $originalKey);
                 }
             }
